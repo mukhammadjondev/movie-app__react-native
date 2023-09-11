@@ -1,17 +1,17 @@
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar'
 import { MagnifyingGlassIcon } from 'react-native-heroicons//outline'
-import { fetchTopRatedMovie, fetchTrendingMovie, fetchUpcomingMovie } from '../api'
+import { fetchPopularMovie, fetchTopRatedMovie, fetchTrendingMovie, fetchUpcomingMovie } from '../api'
 import { useEffect, useState } from 'react';
-import TrendingMovie from '../components/trending-movie';
-import UpcomingMovie from '../components/upcoming-movie';
-import TopRatedMovie from '../components/top-rated-movie';
+import BigCarousel from '../components/big-carousel';
+import SmallCarousel from '../components/small-carousel';
 
 export default function Home() {
   const [trending, setTrending] = useState([])
   const [upcoming, setUpcoming] = useState([])
   const [topRated, setTopRated] = useState([])
+  const [popular, setPopular] = useState([])
 
   const getTrendingMovie = async () => {
     const data = await fetchTrendingMovie()
@@ -28,11 +28,18 @@ export default function Home() {
     setTopRated(data.results)
   }
 
+  const getPopularMovie = async () => {
+    const data = await fetchPopularMovie()
+    setPopular(data.results)
+  }
+
   useEffect(() => {
     getTrendingMovie()
     getUpcomingMovie()
     getTopRatedMovie()
+    getPopularMovie()
   }, [])
+  console.log(trending)
 
   return (
     <View className="flex-1 bg-slate-950">
@@ -45,9 +52,11 @@ export default function Home() {
       </SafeAreaView>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 20}}>
-        {trending.lenght > 0 && <TrendingMovie />}
-        {upcoming.lenght > 0 && <UpcomingMovie />}
-        {topRated.lenght > 0 && <TopRatedMovie />}
+        {trending.length > 0 && <BigCarousel movies={trending} />}
+        {upcoming.length > 0 && <SmallCarousel movies={upcoming} title='Upcoming movies' />}
+        {trending.length > 0 && <SmallCarousel movies={trending.reverse()} title='Trending movies' />}
+        {popular.length > 0 && <SmallCarousel movies={popular} title='Popular movies' />}
+        {topRated.length > 0 && <BigCarousel movies={topRated} />}
       </ScrollView>
     </View>
   )
