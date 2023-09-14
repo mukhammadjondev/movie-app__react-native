@@ -12,7 +12,7 @@ export default function SmallCarousel({movies, title}) {
       <Text className={'text-white text-xl font-semibold ml-2'}>{title}</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{paddingHorizontal: 15}}>
-        {movies.map(movie => (
+        {movies && movies.map(movie => (
           <TouchableWithoutFeedback key={movie.id} onPress={() => navigation.navigate('Movie', movie.id)}>
             <View className='space-y-1 mr-4'>
               <Image source={{uri: image185(movie.poster_path)}} className={'rounded-3xl'} style={{width: width * 0.3, height: height * 0.2}} />

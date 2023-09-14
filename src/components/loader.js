@@ -3,7 +3,7 @@ import * as Progress from 'react-native-progress';
 
 const { width, height } = Dimensions.get('window');
 
-export default function ProgressLoader() {
+export default function Loader() {
 	return (
 		<View
 			style={{ width, height }}
