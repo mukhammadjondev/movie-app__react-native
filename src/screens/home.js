@@ -1,4 +1,4 @@
-import { View, ScrollView, Image } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar'
 import { MagnifyingGlassIcon } from 'react-native-heroicons//outline'
@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import BigCarousel from '../components/big-carousel';
 import SmallCarousel from '../components/small-carousel';
 import Loader from '../components/loader';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Home() {
   const [trending, setTrending] = useState([])
@@ -14,6 +15,8 @@ export default function Home() {
   const [topRated, setTopRated] = useState([])
   const [popular, setPopular] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+
+  const navigation = useNavigation()
 
   const getTrendingMovie = async () => {
     const data = await fetchTrendingMovie()
@@ -49,7 +52,9 @@ export default function Home() {
         <StatusBar style='light' />
         <View className={'flex-row justify-between items-center mx-4'}>
           <Image source={require('../../assets/logo.png')} />
-          <MagnifyingGlassIcon size={30} strokeWidth={2} color={'white'} />
+          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+            <MagnifyingGlassIcon size={30} strokeWidth={2} color={'white'} />
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
 
